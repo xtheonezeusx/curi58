@@ -37,7 +37,9 @@
                     <tbody>
                         @foreach ($trabajos as $trabajo)
                         <tr>
+                            @can('asignar trabajo-sin-asignar')
                             <td><a href="{{ route('trabajos.modificar', $trabajo->id) }}" class="btn btn-sm btn-primary">Modificar Desarrollador</a></td>
+                            @endcan
                             <td>{{ $trabajo->id }}</td>
                             <td>{{ $trabajo->cliente->nombre }}</td>
                             <td>{{ $trabajo->cliente->tipo->nombre }}</td>

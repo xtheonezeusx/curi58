@@ -71,6 +71,7 @@
         </div>
     </div>
 
+    @can('listar mis-trabajos-asignados')
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
@@ -97,7 +98,9 @@
                     <tbody>
                         @foreach ($trabajos as $trabajo)
                         <tr>
+                            @can('culminar mi-trabajo-asignado')
                             <td><a href="{{ route('trabajos.culminar', $trabajo->id) }}" class="btn btn-sm btn-primary">Culminar</a></td>
+                            @endcan
                             <td>{{ $trabajo->id }}</td>
                             <td>{{ $trabajo->cliente->nombre }}</td>
                             @php 
@@ -137,4 +140,5 @@
             @endif
         </div>
     </div>
+    @endcan
 @endsection

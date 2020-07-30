@@ -15,9 +15,11 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
                 Lista de Clientes
+                @can('crear cliente')
                 <button type="button" class="btn btn-sm btn-success float-right" id="btn_nuevo">
                     Nuevo Cliente
                 </button>
+                @endcan
             </h6>
         </div>
         <div class="card-body">

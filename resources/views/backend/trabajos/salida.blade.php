@@ -36,9 +36,11 @@
                     <tbody>
                         @foreach ($trabajos as $trabajo)
                         <tr>
+                            @can('dar salida-trabajo')
                             <td>
                                 <a href="{{ route('trabajos.darSalida', $trabajo->id) }}" class="btn btn-sm btn-primary">Dar Salida</a>
                             </td>
+                            @endcan
                             <td>{{ $trabajo->id }}</td>
                             <td>{{ $trabajo->cliente->nombre }}</td>
                             <td>{{ $trabajo->fecha_entrega }}</td>

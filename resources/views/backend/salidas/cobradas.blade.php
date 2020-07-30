@@ -48,7 +48,9 @@
                     <tbody>
                         @foreach ($salidas as $salida)
                         <tr>
+                            @can('ver-archivos salidas-cobradas')
                             <td><a href="{{ route('comprobantes.show', $salida->id) }}">Ver Archivos</a></td>
+                            @endcan
                             <td>{{ $salida->trabajo->cliente->nombre }}</td>
                             <td>{{ $salida->trabajo->categoria->nombre }}</td>
                             <td>

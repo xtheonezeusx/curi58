@@ -18,7 +18,9 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
                 Ver Archivos
+                @can('cobrar salidas-sin-cobrar')
                 <a href="{{ route('comprobantes.cobrar', $salida->id) }}" class="btn btn-sm btn-success float-right">Nuevo Comprobante</a>
+                @endcan
             </h6>
         </div>
         <div class="card-body">

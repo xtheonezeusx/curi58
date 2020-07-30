@@ -14,7 +14,9 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
                 Lista de Usuarios
+                @can('crear usuario')
                 <a href="{{ route('usuarios.create') }}" class="btn btn-sm btn-success float-right">Nuevo Usuario</a>
+                @endcan
             </h6>
         </div>
         <div class="card-body">
@@ -26,6 +28,8 @@
                             <th>Nombre</th>
                             <th>Email</th>
                             <th>Celular</th>
+                            <th>Rol</th>
+                            <th>Asignar Rol</th>
                             <th>Editar</th>
                             <th>Eliminar</th>
                         </tr>
@@ -37,7 +41,14 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->cellphone }}</td>
+                            <td>{{ $user->roles->pluck('name') }}</td>
+                            @role('admin')
+                            <td><a href="{{ route('usuarios.show', $user->id) }}" class="btn btn-sm btn-primary">Asignar Rol</a></td>
+                            @endrole
+                            @can('editar usuario')
                             <td><a href="{{ route('usuarios.edit', $user->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a></td>
+                            @endcan
+                            @can('eliminar usuario')
                             <td>
                                 <button class="btn btn-sm btn-danger" onclick="event.preventDefault(); if (confirm('¿Estas seguro de eliminar al Usuario?')) { document.getElementById('form-delete-{{ $user->id }}').submit() }"><i class="fas fa-trash-alt"></i></button>
                                 <form action="{{ route('usuarios.destroy', $user->id) }}" method="POST" style="display:none;" id="form-delete-{{ $user->id }}">
@@ -45,6 +56,7 @@
                                     @method('DELETE')
                                 </form>
                             </td>
+                            @endcan
                         </tr>
                         @endforeach
                     </tbody>

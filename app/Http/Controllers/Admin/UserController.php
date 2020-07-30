@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Hash;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -70,6 +71,30 @@ class UserController extends Controller
         $user = User::find($id);
         $user->delete();
         Toastr()->success('Usuario eliminado exitosamente.');
+        return redirect()->route('usuarios.index');
+    }
+
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+        return view('backend.usuarios.show', compact('user', 'roles'));
+    }
+
+    public function roles(Request $request, $id)
+    {
+        /*
+        $request->validate([
+            'roles' => 'required',
+        ]);
+        */
+
+        $roles = $request->roles;
+
+        $user = User::findOrFail($id);
+        $user->syncRoles($roles);
+
+        Toastr()->success('Roles asignados exitosamente.');
         return redirect()->route('usuarios.index');
     }
 }

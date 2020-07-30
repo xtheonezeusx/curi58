@@ -18,66 +18,95 @@
           <span>Dashboard</span></a>
       </li>
 
+      @can('listar usuarios')
       <li class="nav-item {{ Request::is('admin/usuarios*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('usuarios.index') }}">
           <i class="fas fa-fw fa-user"></i>
           <span>Usuarios</span></a>
       </li>
+      @endcan
 
+      @role('admin')
+      <li class="nav-item {{ Request::is('admin/roles*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('roles.index') }}">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Roles</span></a>
+      </li>
+      @endrole
+
+      @can('listar clientes')
       <li class="nav-item {{ Request::is('admin/clientes*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('clientes.index') }}">
           <i class="fas fa-fw fa-user"></i>
           <span>Clientes</span></a>
       </li>
+      @endcan
 
+      @can('listar trabajos-sin-asignar')
       <li class="nav-item {{ Request::is('admin/trabajos') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('trabajos.index') }}">
           <i class="fas fa-fw fa-book"></i>
           <span>Trabajos sin Asignar</span></a>
       </li>
+      @endcan
 
+      @can('listar trabajos-asignados')
       <li class="nav-item {{ Request::is('admin/trabajos/asignados') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('trabajos.asignados') }}">
           <i class="fas fa-fw fa-book"></i>
           <span>Trabajos Asignados</span></a>
       </li>
+      @endcan
 
+      @can('listar mis-trabajos-asignados')
       <li class="nav-item {{ Request::is('admin/trabajos/mis_asignados') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('trabajos.mis_asignados') }}">
           <i class="fas fa-fw fa-book"></i>
           <span>Mis Trabajos Asignados</span></a>
       </li>
+      @endcan
 
+      @can('listar trabajos-control-calidad')
       <li class="nav-item {{ Request::is('admin/trabajos/control') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('trabajos.control') }}">
           <i class="fas fa-fw fa-book"></i>
           <span>Control de Calidad</span></a>
       </li>
+      @endcan
 
+      @can('listar trabajos-para-salida')
       <li class="nav-item {{ Request::is('admin/trabajos/salida') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('trabajos.salida') }}">
           <i class="fas fa-fw fa-book"></i>
           <span>Trabajos para dar salida</span></a>
       </li>
+      @endcan
 
+      @can('listar trabajos-enviados')
       <li class="nav-item {{ Request::is('admin/trabajos/enviados') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('trabajos.enviados') }}">
           <i class="fas fa-fw fa-book"></i>
           <span>Trabajos enviados</span></a>
       </li>
+      @endcan
 
+      @can('listar salidas-sin-cobrar')
       <li class="nav-item {{ Request::is('admin/salidas/sin_cobrar') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('salidas.sin_cobrar') }}">
           <i class="fas fa-fw fa-book"></i>
           <span>Salidas sin cobrar</span></a>
       </li>
+      @endcan
 
+      @can('listar salidas-cobradas')
       <li class="nav-item {{ Request::is('admin/salidas/cobradas') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('salidas.cobradas') }}">
           <i class="fas fa-fw fa-book"></i>
           <span>Salidas cobradas</span></a>
       </li>
+      @endcan
 
+      @role('admin')
       <li class="nav-item {{ Request::is('admin/grupos*') ? 'active' : '' || Request::is('admin/instituciones*') ? 'active' : '' }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
           <i class="fas fa-fw fa-folder"></i>
@@ -96,6 +125,7 @@
           </div>
         </div>
       </li>
+      @endrole
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">

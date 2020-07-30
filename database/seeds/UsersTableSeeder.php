@@ -4,6 +4,9 @@ use Illuminate\Database\Seeder;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 class UsersTableSeeder extends Seeder
 {
     /**
@@ -13,7 +16,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
+        $user = User::create([
             'name' => 'Jordan Antoni Sedano Huamán',
             'email' => 'yordan.arcangel@gmail.com',
             'email_verified_at' => now(),
@@ -21,5 +24,8 @@ class UsersTableSeeder extends Seeder
             'cellphone' => '939032042',
             'remember_token' => Str::random(10),
         ]);
+
+        $user->assignRole('admin');
+
     }
 }

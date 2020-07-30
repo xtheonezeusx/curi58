@@ -36,7 +36,9 @@
                     <tbody>
                         @foreach ($trabajos as $trabajo)
                         <tr>
+                            @can('culminar mi-trabajo-asignado')
                             <td><a href="{{ route('trabajos.culminar', $trabajo->id) }}" class="btn btn-sm btn-primary">Culminar</a></td>
+                            @endcan
                             <td>{{ $trabajo->id }}</td>
                             <td>{{ $trabajo->cliente->nombre }}</td>
                             @php 

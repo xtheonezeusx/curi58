@@ -37,6 +37,7 @@
                     <tbody>
                         @foreach ($trabajos as $trabajo)
                         <tr>
+                            @can('aprobar trabajos-control-calidad')
                             <td>
                                 <button href="" class="btn btn-sm btn-success" onclick="event.preventDefault(); if (confirm('¿Estas seguro de aprobar este trabajo?')) { document.getElementById('form-aprobar-{{ $trabajo->id }}').submit(); }">Aprobar</button>
                                 <form action="{{ route('trabajos.aprobar', $trabajo->id) }}" method="POST" id="form-aprobar-{{ $trabajo->id }}">
@@ -44,9 +45,12 @@
                                     @method('PUT')
                                 </form>
                             </td>
+                            @endcan
+                            @can('devolver trabajos-control-calidad')
                             <td>
                                 <a href="{{ route('trabajos.devolver', $trabajo->id) }}" class="btn btn-sm btn-primary">Devolver</a>
                             </td>
+                            @endcan
                             <td>{{ $trabajo->id }}</td>
                             <td>{{ $trabajo->cliente->nombre }}</td>
                             <td>{{ $trabajo->fecha_entrega }}</td>

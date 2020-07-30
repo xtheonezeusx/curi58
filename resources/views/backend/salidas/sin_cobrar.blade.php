@@ -34,7 +34,9 @@
                     <tbody>
                         @foreach ($salidas as $salida)
                         <tr>
+                            @can('cobrar salidas-sin-cobrar')
                             <td><a href="{{ route('salidas.cobrar', $salida->id) }}" class="btn btn-sm btn-primary">Cobrar</a></td>
+                            @endcan
                             <td>{{ $salida->trabajo->cliente->nombre }}</td>
                             <td>{{ $salida->trabajo->categoria->nombre }}</td>
                             <td>

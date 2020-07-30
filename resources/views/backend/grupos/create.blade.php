@@ -19,7 +19,7 @@
             <form action="{{ route('grupos.store') }}" method="POST">
                 @csrf
                 <div class="form-group row">
-                    <label for="nombre" class="col-fom-lable col-sm-2">Nombre</label>
+                    <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
                     <div class="col-sm-10">
                         <input type="text" id="nombre" name="nombre" class="form-control" autofocus value="{{ old('nombre') }}">
                     </div>
