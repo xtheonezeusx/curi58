@@ -12,9 +12,9 @@ use DB;
 
 class SalidaController extends Controller
 {
-    public function sin_cobrar()
+    public function sin_cobrar(Request $request)
     {
-        $salidas = Salida::orderBy('id', 'DESC')->where('estado', 'sin_cobrar')->paginate(10);
+        $salidas = Salida::orderBy('id', 'DESC')->where('estado', 'sin_cobrar')->where('ciclo_id', $request->session()->get('ciclo_id'))->paginate(10);
         return view('backend.salidas.sin_cobrar', compact('salidas'));
     }
 
@@ -60,10 +60,10 @@ class SalidaController extends Controller
         return redirect()->route('salidas.cobradas');
     }
 
-    public function cobradas()
+    public function cobradas(Request $request)
     {
 
-        $salidas = Salida::orderBy('id', 'DESC')->where('estado', 'cobrado')->paginate(10);
+        $salidas = Salida::orderBy('id', 'DESC')->where('estado', 'cobrado')->where('ciclo_id', $request->session()->get('ciclo_id'))->paginate(10);
 
         return view('backend.salidas.cobradas', compact('salidas'));
     }

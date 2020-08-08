@@ -47,5 +47,16 @@ class PermissionsTableSeeder extends Seeder
 
         Permission::create(['name' => 'listar salidas-cobradas']);
         Permission::create(['name' => 'ver-archivos salidas-cobradas']);
+        Permission::create(['name' => 'editar-archivos salidas-cobradas']);
+        Permission::create(['name' => 'eliminar-archivos salidas-cobradas']);
+
+        Permission::create(['name' => 'modulo configuracion']);
+
+        Permission::create(['name' => 'modulo roles-permisos']);
+
+        Permission::create(['name' => 'listar ciclos']);
+        Permission::create(['name' => 'crear ciclo']);
+        Permission::create(['name' => 'editar ciclo']);
+        Permission::create(['name' => 'eliminar ciclo']);
     }
 }

@@ -1,26 +1,32 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes(['register' => false]);
 
+Route::get('preview', 'PreviewController@index')->name('preview.index')->middleware('auth');
+Route::post('preview/select', 'PreviewController@select')->name('preview.select');
+
 Route::group([
     'prefix' => 'admin',
     'namespace' => 'Admin',
     'middleware' => 'auth',
+], function() {
+    // ciclos
+    Route::get('ciclos', 'CicloController@index')->name('ciclos.index');
+    Route::get('ciclos/create', 'CicloController@create')->name('ciclos.create');
+    Route::post('ciclos', 'CicloController@store')->name('ciclos.store');
+    Route::get('ciclos/{id}/edit', 'CicloController@edit')->name('ciclos.edit');
+    Route::put('ciclos/{id}', 'CicloController@update')->name('ciclos.update');
+    Route::delete('ciclos/{id}', 'CicloController@destroy')->name('ciclos.destroy');
+});
+
+Route::group([
+    'prefix' => 'admin',
+    'namespace' => 'Admin',
+    'middleware' => ['auth', 'periodo'],
 ], function() {
     // dashboard
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
@@ -84,12 +90,12 @@ Route::group([
 
     // comprobantes
     Route::get('salidas/{id}/mostrar', 'ComprobanteController@show')->name('comprobantes.show')->middleware('permission:ver-archivos salidas-cobradas');
-    Route::get('comprobantes/{id}/edit', 'ComprobanteController@edit')->name('comprobantes.edit')->middleware('permission:ver-archivos salidas-cobradas');
-    Route::put('comprobantes/{id}', 'ComprobanteController@update')->name('comprobantes.update')->middleware('permission:ver-archivos salidas-cobradas');
-    Route::delete('comprobantes/{id}', 'ComprobanteController@destroy')->name('comprobantes.destroy')->middleware('permission:ver-archivos salidas-cobradas');
+    Route::get('comprobantes/{id}/edit', 'ComprobanteController@edit')->name('comprobantes.edit')->middleware('permission:editar-archivos salidas-cobradas');
+    Route::put('comprobantes/{id}', 'ComprobanteController@update')->name('comprobantes.update')->middleware('permission:editar-archivos salidas-cobradas');
+    Route::delete('comprobantes/{id}', 'ComprobanteController@destroy')->name('comprobantes.destroy')->middleware('permission:eliminar-archivos salidas-cobradas');
 
     // FROM HERE USES THE ROLE:ADMIN
-    Route::group(['middleware' => ['role:admin']], function () {
+    Route::group(['middleware' => ['permission:modulo configuracion']], function () {
 
     // resource grupos
     Route::resource('grupos', 'GrupoController');
@@ -143,6 +149,11 @@ Route::group([
     // cuentas
     Route::resource('cuentas', 'CuentaController');
 
+    });
+    // END MIDDLEWARE
+
+    Route::group(['middleware' => ['permission:modulo roles-permisos']], function () {
+
     // roles
     Route::get('roles', 'RoleController@index')->name('roles.index');
     Route::get('roles/create', 'RoleController@create')->name('roles.create');
@@ -156,6 +167,5 @@ Route::group([
     Route::post('usuarios/{id}/roles', 'UserController@roles')->name('usuarios.roles');
 
     });
-    // END MIDDLEWARE
 
 });

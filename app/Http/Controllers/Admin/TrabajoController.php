@@ -17,6 +17,7 @@ use App\Cliente;
 use App\User;
 use App\Envio;
 use App\Salida;
+use App\Sub;
 
 class TrabajoController extends Controller
 {
@@ -24,8 +25,9 @@ class TrabajoController extends Controller
     public function index()
     {
         $users = User::all();
+        $subs = Sub::all();
         $categorias = Categoria::all();
-        return view('backend.trabajos.index', compact('categorias', 'users'));
+        return view('backend.trabajos.index', compact('categorias', 'users', 'subs'));
     }
 
     public function store(Request $request)
@@ -66,6 +68,7 @@ class TrabajoController extends Controller
                 'curso_id' => $request->curso,
                 'docente_id' => $request->docente,
                 'user_id' => Auth::user()->id,
+                'ciclo_id' => $request->session()->get('ciclo_id'),
             ]);
 
             $message = 'Trabajo creado exitosamente.';
@@ -79,7 +82,7 @@ class TrabajoController extends Controller
         return $output;
     }
 
-    public function getTrabajos()
+    public function getTrabajos(Request $request)
     {
         $trabajos = DB::table('trabajos')
             ->join('users', 'trabajos.user_id', '=', 'users.id')
@@ -87,7 +90,8 @@ class TrabajoController extends Controller
             ->leftjoin('docentes', 'trabajos.docente_id', '=', 'docentes.id')
             ->join('clientes', 'trabajos.cliente_id', '=', 'clientes.id')
             ->join('categorias', 'trabajos.categoria_id', '=', 'categorias.id')
-            ->select('trabajos.id', 'trabajos.fecha_entrega', 'trabajos.archivo', 'clientes.nombre as cliente', 'cursos.nombre as curso', 'docentes.nombre as docente', 'users.name as user', 'categorias.nombre as categoria')->where('trabajos.estado', 'sin_asignar')->get();
+            ->join('subs', 'trabajos.sub_id', '=', 'subs.id')
+            ->select('trabajos.id', 'trabajos.fecha_entrega', 'trabajos.archivo', 'clientes.nombre as cliente', 'cursos.nombre as curso', 'docentes.nombre as docente', 'users.name as user', 'categorias.nombre as categoria', 'subs.nombre as subtipo', 'trabajos.precio', 'trabajos.adelanto')->where('trabajos.estado', 'sin_asignar')->where('ciclo_id', $request->session()->get('ciclo_id'))->get();
         return DataTables::of($trabajos)
         ->editColumn('curso', function ($trabajo) {
             if ($trabajo->curso == null) return '<span class="badge badge-info">No definido</span>';
@@ -141,9 +145,12 @@ class TrabajoController extends Controller
             $trabajo->update([
                 'fecha_entrega' => $request->fecha_entrega,
                 'categoria_id' => $request->categoria,
+                'sub_id' => $request->subtipo,
                 'curso_id' => $request->curso,
                 'docente_id' => $request->docente,
                 'archivo' => $path,
+                'precio' => $request->precio,
+                'adelanto' => $request->adelanto,
             ]);
 
             $message = 'Trabajo actualizado exitosamente.';
@@ -219,22 +226,23 @@ class TrabajoController extends Controller
         return $output;
     }
 
-    public function asignados()
+    public function asignados(Request $request)
     {
-        $trabajos = Trabajo::orderBy('id', 'DESC')->where('estado', 'asignado')->paginate(10);
+        $trabajos = Trabajo::orderBy('id', 'DESC')->where('estado', 'asignado')->where('ciclo_id', $request->session()->get('ciclo_id'))->paginate(10);
         $trabajosd = DB::table('trabajos')
                         ->join('users', 'users.id', '=', 'trabajos.desarrollador_id')
                         ->select('users.*', DB::raw('count(*) as cantidad'))
                         ->groupBy('users.id')
                         ->where('trabajos.estado', '=', 'asignado')
+                        ->where('trabajos.ciclo_id', '=', $request->session()->get('ciclo_id'))
                         ->get();
         return view('backend.trabajos.asignados', compact('trabajos', 'trabajosd'));
     }
 
-    public function mis_asignados()
+    public function mis_asignados(Request $request)
     {
         $user = Auth::user();
-        $trabajos = Trabajo::orderBy('id', 'DESC')->where('estado', 'asignado')->where('desarrollador_id', $user->id)->paginate(10);
+        $trabajos = Trabajo::orderBy('id', 'DESC')->where('estado', 'asignado')->where('ciclo_id', $request->session()->get('ciclo_id'))->where('desarrollador_id', $user->id)->paginate(10);
         return view('backend.trabajos.mis_asignados', compact('trabajos'));
     }
 
@@ -276,9 +284,9 @@ class TrabajoController extends Controller
 
     }
 
-    public function control()
+    public function control(Request $request)
     {
-        $trabajos = Trabajo::orderBy('id', 'DESC')->where('estado', 'control')->paginate(10);
+        $trabajos = Trabajo::orderBy('id', 'DESC')->where('estado', 'control')->where('ciclo_id', $request->session()->get('ciclo_id'))->paginate(10);
         return view('backend.trabajos.control', compact('trabajos'));
     }
 
@@ -292,9 +300,9 @@ class TrabajoController extends Controller
         return redirect()->route('trabajos.control');
     }
 
-    public function salida()
+    public function salida(Request $request)
     {
-        $trabajos = Trabajo::orderBy('id', 'DESC')->where('estado', 'aprobado')->paginate(10);
+        $trabajos = Trabajo::orderBy('id', 'DESC')->where('estado', 'aprobado')->where('ciclo_id', $request->session()->get('ciclo_id'))->paginate(10);
         return view('backend.trabajos.salida', compact('trabajos'));
     }
 
@@ -371,6 +379,7 @@ class TrabajoController extends Controller
         Salida::create([
             'estado' => 'sin_cobrar',
             'trabajo_id' => $trabajo->id,
+            'ciclo_id' => $request->session()->get('ciclo_id'),
         ]);
 
         Toastr()->success('Trabajo enviado exitosamente');
@@ -378,9 +387,9 @@ class TrabajoController extends Controller
 
     }
 
-    public function enviados()
+    public function enviados(Request $request)
     {
-        $trabajos = Trabajo::orderBy('id', 'DESC')->where('estado', 'enviado')->paginate(10);
+        $trabajos = Trabajo::orderBy('id', 'DESC')->where('estado', 'enviado')->where('ciclo_id', $request->session()->get('ciclo_id'))->paginate(10);
         return view('backend.trabajos.enviados', compact('trabajos'));
 
     }

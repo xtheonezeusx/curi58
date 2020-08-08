@@ -29,9 +29,7 @@
                             <th>Email</th>
                             <th>Celular</th>
                             <th>Rol</th>
-                            <th>Asignar Rol</th>
-                            <th>Editar</th>
-                            <th>Eliminar</th>
+                            <th colspan="3">Accciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,9 +40,9 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->cellphone }}</td>
                             <td>{{ $user->roles->pluck('name') }}</td>
-                            @role('admin')
+                            @can('modulo roles-permisos')
                             <td><a href="{{ route('usuarios.show', $user->id) }}" class="btn btn-sm btn-primary">Asignar Rol</a></td>
-                            @endrole
+                            @endcan
                             @can('editar usuario')
                             <td><a href="{{ route('usuarios.edit', $user->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a></td>
                             @endcan

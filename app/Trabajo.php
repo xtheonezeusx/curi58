@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Trabajo extends Model
 {
     protected $fillable = [
-        'descripcion', 'fecha_entrega', 'archivo', 'estado', 'cliente_id', 'categoria_id', 'curso_id', 'docente_id', 'user_id', 'desarrollador_id', 'observacion', 'archivo_final', 'precio', 'adelanto', 'sub_id', 'envio_id',
+        'descripcion', 'fecha_entrega', 'archivo', 'estado', 'cliente_id', 'categoria_id', 'curso_id', 'docente_id', 'user_id', 'desarrollador_id', 'observacion', 'archivo_final', 'precio', 'adelanto', 'sub_id', 'envio_id', 'ciclo_id',
     ];
 
     public function curso()
@@ -53,6 +53,11 @@ class Trabajo extends Model
     public function salida()
     {
         return $this->hasOne('App\Salida');
+    }
+
+    public function ciclo()
+    {
+        return $this->belongsTo('App\Ciclo');
     }
 
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Salida extends Model
 {
     protected $fillable = [
-        'trabajo_id', 'estado',
+        'trabajo_id', 'estado', 'ciclo_id',
     ];
 
     public function trabajo()
@@ -20,5 +20,9 @@ class Salida extends Model
         return $this->hasMany('App\Comprobante');
     }
 
+    public function ciclo()
+    {
+        return $this->belongsTo('App\Ciclo');
+    }
     
 }

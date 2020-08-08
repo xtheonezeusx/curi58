@@ -49,6 +49,9 @@ class CreateTrabajosTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
 
+            $table->unsignedBigInteger('ciclo_id');
+            $table->foreign('ciclo_id')->references('id')->on('ciclos');
+
             $table->timestamps();
         });
     }

@@ -27,10 +27,13 @@
                             <th>Fecha Entrega</th>
                             <th>Cliente</th>
                             <th>Tipo</th>
+                            <th>Sub Tipo</th>
                             <th>Curso</th>
                             <th>Docente</th>
                             <th>Registrado Por</th>
                             <th>Archivo</th>
+                            <th>Precio</th>
+                            <th>Adelanto</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,6 +77,17 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="subtipo" class="col-form-label col-sm-3">Sub Tipo</label>
+                    <div class="col-sm-9">
+                        <select name="subtipo" id="subtipo" class="custom-select">
+                            <option value="">Selecciona un Tipo</option>
+                            @foreach ($subs as $sub)
+                            <option value="{{ $sub->id }}">{{ $sub->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="curso" class="col-form-label col-sm-3">Curso</label>
                     <div class="col-sm-9">
                         <select name="curso" id="curso" class="custom-select">
@@ -93,6 +107,18 @@
                     <label for="archivo" class="col-form-label col-sm-3">Archivo</label>
                     <div class="col-sm-9">
                         <input type="file" name="archivo" id="archivo" class="form-control-file">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="precio" class="col-form-label col-sm-3">Precio</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="precio" name="precio" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="adelanto" class="col-form-label col-sm-3">Adelanto</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="adelanto" name="adelanto" class="form-control">
                     </div>
                 </div>
         </div>
@@ -162,10 +188,13 @@
                     {data: "fecha_entrega"},
                     {data: "cliente"},
                     {data: "categoria"},
+                    {data: "subtipo"},
                     {data: "curso"},
                     {data: "docente"},
                     {data: "user"},
                     {data: "archivo", searchable: false, orderable: false},
+                    {data: "precio"},
+                    {data: "adelanto"},
                 ],
                 order: [[1, 'DESC']],
                 language: { "url": "/backend/vendor/datatables/Spanish.json" },
@@ -192,12 +221,15 @@
                     success: function(data) {
 
                         $("#categoria option[value=" +  data.categoria_id + "]").attr("selected", true);
+                        $("#subtipo option[value=" +  data.sub_id + "]").attr("selected", true);
                         var curso_id = data.curso_id;
                         var docente_id = data.docente_id;
                         var cliente_id = data.cliente_id;
 
                         $("#fecha_entrega").val(data.fecha_entrega);
                         $("#trabajo_id").val(trabajo_id);
+                        $("#precio").val(data.precio);
+                        $("#adelanto").val(data.adelanto);
 
                         if (!curso_id && !docente_id) {
                             $("#docente").val(null);

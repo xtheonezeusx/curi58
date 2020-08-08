@@ -42,7 +42,7 @@
                 <div class="form-group row">
                     <label for="numero" class="col-form-label col-sm-2">Número de Operación</label>
                     <div class="col-sm-10">
-                        <input type="text" id="numero" name="numero" class="form-control">
+                        <input type="text" id="numero" name="numero" class="form-control" value="{{ old('numero') }}">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -54,7 +54,7 @@
                 <div class="form-group row">
                     <label for="monto" class="col-form-label col-sm-2">Monto del Comprobante</label>
                     <div class="col-sm-10">
-                        <input type="number" id="monto" name="monto" step="0.1" class="form-control">
+                        <input type="number" id="monto" name="monto" step="0.1" class="form-control" value="{{ old('monto') }}">
                     </div>
                 </div>
                 <div class="form-group row">

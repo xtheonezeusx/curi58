@@ -26,13 +26,13 @@
       </li>
       @endcan
 
-      @role('admin')
+      @can('modulo roles-permisos')
       <li class="nav-item {{ Request::is('admin/roles*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('roles.index') }}">
           <i class="fas fa-fw fa-user"></i>
           <span>Roles</span></a>
       </li>
-      @endrole
+      @endcan
 
       @can('listar clientes')
       <li class="nav-item {{ Request::is('admin/clientes*') ? 'active' : '' }}">
@@ -106,7 +106,7 @@
       </li>
       @endcan
 
-      @role('admin')
+      @can('modulo configuracion')
       <li class="nav-item {{ Request::is('admin/grupos*') ? 'active' : '' || Request::is('admin/instituciones*') ? 'active' : '' }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
           <i class="fas fa-fw fa-folder"></i>
@@ -125,7 +125,22 @@
           </div>
         </div>
       </li>
-      @endrole
+      @endcan
+
+      @can('listar ciclos')
+      <li class="nav-item {{ Request::is('admin/ciclos*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('ciclos.index') }}">
+          <i class="fas fa-fw fa-calendar-alt"></i>
+          <span>Ciclos Académicos</span></a>
+      </li>
+      @endcan
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{ route('preview.index') }}">
+          <i class="fas fa-fw fa-exchange-alt"></i>
+          <span>Cambiar Ciclo</span></a>
+      </li>
+      
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">

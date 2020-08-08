@@ -16,7 +16,7 @@ use App\Trabajo;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $users = User::all();
         $instituciones = Institucion::all();
@@ -25,8 +25,8 @@ class DashboardController extends Controller
         $clientes = Cliente::all();
 
         $user = Auth::user();
-        $trabajos = Trabajo::orderBy('id', 'DESC')->where('estado', 'asignado')->where('desarrollador_id', $user->id)->paginate(10);
-
+        $trabajos = Trabajo::orderBy('id', 'DESC')->where('estado', 'asignado')->where('ciclo_id', $request->session()->get('ciclo_id'))->where('desarrollador_id', $user->id)->paginate(10);
+        
         return view('backend.dashboard', compact('users', 'instituciones', 'facultades', 'grupos', 'clientes', 'trabajos'));
     }
 

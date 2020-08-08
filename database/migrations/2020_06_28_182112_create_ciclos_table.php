@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSalidasTable extends Migration
+class CreateCiclosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateSalidasTable extends Migration
      */
     public function up()
     {
-        Schema::create('salidas', function (Blueprint $table) {
+        Schema::create('ciclos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('estado');
-            $table->unsignedBigInteger('trabajo_id');
-            $table->foreign('trabajo_id')->references('id')->on('trabajos');
-            $table->unsignedBigInteger('ciclo_id');
-            $table->foreign('ciclo_id')->references('id')->on('ciclos');
+            $table->string('nombre');
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ class CreateSalidasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('salidas');
+        Schema::dropIfExists('ciclos');
     }
 }

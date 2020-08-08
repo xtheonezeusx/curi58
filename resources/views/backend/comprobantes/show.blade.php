@@ -48,7 +48,10 @@
                             <td>{{ $comprobante->cuenta->numero }}</td>
                             <td>{{ $comprobante->cuenta->banco }}</td>
                             <td><a href="{{ asset($comprobante->archivo) }}" target="_blank">Descargar</a></td>
+                            @can('editar-archivos salidas-cobradas')
                             <td><a href="{{ route('comprobantes.edit', $comprobante->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a></td>
+                            @endcan
+                            @can('eliminar-archivos salidas-cobradas')
                             <td>
                                 <button class="btn btn-sm btn-danger" onclick="event.preventDefault(); if (confirm('¿Estas seguro de eliminar el Comprobante?')) { document.getElementById('form-delete-{{ $comprobante->id }}').submit() }"><i class="fas fa-trash-alt"></i></button>
                                 <form action="{{ route('comprobantes.destroy', $comprobante->id) }}" method="POST" style="display:none;" id="form-delete-{{ $comprobante->id }}">
@@ -56,6 +59,7 @@
                                     @method('DELETE')
                                 </form>
                             </td>
+                            @endcan
                         </tr>
                         @endforeach
                     </tbody>
